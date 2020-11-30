@@ -4,8 +4,9 @@ const server = express();
 const shortid = require('shortid');
 server.use(express.json());
 
-//fake dummy user data'
+//empty array where users will be
 let users = [];
+
 const Users = {
     createNew(user) {
         const newUser = { id: shortid.generate(), ...user };
@@ -29,7 +30,11 @@ server.post('/api/users', (req, res) => {
 })
 server.get('/api/users', (req, res) => {
     const users = Users.getAll();
-    res.status(200).json(users);
+    if(!users){
+        res.status(500).json({errorMessage: "The users information could not be retrieved."})
+    } else {
+        res.status(200).json(users);
+    }
 })
 
 
